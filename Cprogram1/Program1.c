@@ -2,11 +2,12 @@
  * Program1.c
  *
  *  Created on: Feb 9, 2023
- *      Author: k617r140/Kevin Riverss
+ *      Author: k617r140/Kevin Rivers
  */
 
 #include <stdio.h>
 #include <stdlib.h>
+char *Month[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 void monthly_report(){
 
@@ -23,9 +24,9 @@ void monthly_report(){
 	printf("\n");
 	for(i = 0; i < 12; i++){
         //For loop prints every month and sales for that month.
-		printf("%s\t", Month[i]);
+		printf("%-10s", Month[i]);
 		fgets(line, 255, fpointer);
-		printf("$%10s", line);
+		printf("$%s", line);
 	}
 	fclose(fpointer);
     printf("\n");
@@ -33,9 +34,9 @@ void monthly_report(){
 
 void sales_summary(){
 
-    double min_sale; //empty var to store the min sale
-    double max_sale; //empty var to store the max sale
-    double avg_sale = 0; //empty var to calculate average
+    float min_sale; //empty var to store the min sale
+    float max_sale; //empty var to store the max sale
+    float avg_sale = 0; //empty var to calculate average
 
 	double sales[12]; //empty array to store nums from sale_nums file.
 	int i; // to assist with for loops. 
@@ -72,22 +73,22 @@ void sales_summary(){
     }
 
     printf("Sales summary:\n");
-	printf("Maximum sales: $%10lf\n", max_sale);
-	printf("Minimum sales: $%10lf\n", min_sale);
-	printf("Average sales: $%10lf\n", avg_sale/12);
+	printf("Maximum sales: $%10.2f\n", max_sale);
+	printf("Minimum sales: $%10.2f\n", min_sale);
+	printf("Average sales: $%10.2f\n", avg_sale/12);
 }
 
 void six_month_avg(){
 
-    double sales[12]; //Empty array used to hold each month.
+    float sales[12]; //Empty array used to hold each month.
 	int i; // to assist with for loops. 
 	char line[255]; //Sets the amount of characters that the 'char' can hold (aka string, this is an array of chars)
-    double six_month_calc; // Initializing var to hold calc
+    float six_month_calc; // Initializing var to hold calc
 
 	FILE * fpointer = fopen("sale_numbers.txt", "r"); //Opens given file.
 
     for(i = 0; i < 12; i++){
-		fscanf(fpointer, "%lf", &sales[i]);
+		fscanf(fpointer, "%f", &sales[i]);
         //Appends each monthly sale amount to a sales array
 	}
 
@@ -96,52 +97,11 @@ void six_month_avg(){
 
     //The following for loops below are calculating each 6 month period and displaying the average.
 
-    for(i = 0; i < 6; i++){
+    for(i = 0; i < 7; i++){
         //January - June Avg
-        six_month_calc += sales[i];
+        six_month_calc = (sales[i]+ sales[i+1]+sales[i+2]+sales[i+3]+sales[i+4]+sales[i+5])/6;
+        printf("%-10s- %-10s $%.2f\n", Month[i],Month[i+5], six_month_calc);
     }
-    printf("January - June   \t$%10lf\n", six_month_calc/=6);
-    six_month_calc = 0;
-    for(i = 1; i < 7; i++){
-        //February - July Avg
-        six_month_calc += sales[i];
-    }
-    printf("February - July \t$%10lf\n", six_month_calc/=6);
-    
-    six_month_calc = 0;
-    for(i = 2; i < 8; i++){
-        //March - August Avg
-        six_month_calc += sales[i];
-    }
-    printf("March - August  \t$%10lf\n", six_month_calc/=6);
-
-    six_month_calc = 0;
-    for(i = 3; i < 9; i++){
-        //April - September Avg
-        six_month_calc += sales[i];
-    }
-    printf("April - September \t$%10lf\n", six_month_calc/=6);
-
-    six_month_calc = 0;
-    for(i = 4; i < 10; i++){
-        //May - October Avg
-        six_month_calc += sales[i];
-    }
-    printf("May - October    \t$%10lf\n", six_month_calc/=6);
-
-    six_month_calc = 0;
-    for(i = 5; i < 11; i++){
-        //June - November Avg
-        six_month_calc += sales[i];
-    }
-    printf("June - November \t$%10lf\n", six_month_calc/=6);
-
-    six_month_calc = 0;
-    for(i = 6; i < 12; i++){
-        //July - December Avg
-        six_month_calc += sales[i];
-    }
-    printf("July - December \t$%10lf\n", six_month_calc/=6);
 
 }
 
@@ -150,25 +110,49 @@ void sales_report(){
     printf("Sales Report (Highest to Lowest):\n");
     printf("Month\t\tSales\n");
     char line[255]; //Sets the amount of characters that the 'char' can hold (aka string, this is an array of chars)
-    double sales[12]; //Holds the month of every sale.
-
+    float sales[12]; //Holds the month of every sale.
+    float final_sales[12];
 	FILE * fpointer = fopen("sale_numbers.txt", "r");
 
 	char *Month[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    
     // ^ Above array holds every single month.
-	int i,j; //Initiallizing i/j variables for loops
+    int i,j;
+    float temp;
+    int temp_month; 
 
+    for (i = 0; i < 12; i++){
+        fscanf(fpointer, "%f", &sales[i]);
+    }
+    fclose(fpointer);
+    int final_months[12];
     for(i = 0; i < 12; i++){
         //Appending each monthly sale to an array
-        fscanf(fpointer, "%lf", &sales[i]);
+        final_sales[i] = sales[i];
+        final_months[i] = i;
+    }
+        for(i = 0; i < 12; i++){
+        for(j = i+1; j < 12; j++){
+        //Can't figure out how to sort in acending order.
+        if (final_sales[i] < final_sales[j]){
+            temp = final_sales[i];
+            final_sales[i] = final_sales[j];
+            final_sales[j] = temp; 
+
+            temp_month = final_months[i];
+            final_months[i] = final_months[j];
+            final_months[j] = temp_month; 
+        }
+    }
     }
 
-    for(i = 11; i > -1; i--){
-        //Can't figure out how to sort in acending order.
-        printf("%s\t%s\n",Month[i],"Sale goes here.");
+    for(i=0; i<12; i++){
+       
+        printf("%-10s\t%.2f\n",Month[final_months[i]],final_sales[i]);
     }
     
-fclose(fpointer); //Closes file.
+    
+
 }
 int main(){
     printf("=====================================\n");
