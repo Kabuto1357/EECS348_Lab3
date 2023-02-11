@@ -7,7 +7,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-char *Month[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+#include <string.h>
+
+char *Month[15] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
 void monthly_report(){
 
@@ -38,6 +40,9 @@ void sales_summary(){
     float max_sale; //empty var to store the max sale
     float avg_sale = 0; //empty var to calculate average
 
+    char max_month[255];
+    char least_month[255];
+
 	double sales[12]; //empty array to store nums from sale_nums file.
 	int i; // to assist with for loops. 
 	char line[255];
@@ -54,15 +59,17 @@ void sales_summary(){
         max_sale = 0;
         if(sales[i] > max_sale){
             max_sale = sales[i];
+            strcpy(max_month,Month[i]);
         }
     }
     
-    min_sale = sales[0];
 
     for(i=0; i < 12; i++){
         //for loop used to figure what the mix sale is. 
+        min_sale = sales[0];
         if(sales[i] < min_sale){
             min_sale = sales[i];
+            strcpy(least_month, Month[i]);
         }
 
     }
@@ -73,8 +80,8 @@ void sales_summary(){
     }
 
     printf("Sales summary:\n");
-	printf("Maximum sales: $%10.2f\n", max_sale);
-	printf("Minimum sales: $%10.2f\n", min_sale);
+    printf("Minimum sales: $%10.2f (%s) \n", min_sale, least_month); //Not sure why January doesn't show.
+	printf("Maximum sales: $%10.2f (%s) \n", max_sale, max_month); //But this works.
 	printf("Average sales: $%10.2f\n", avg_sale/12);
 }
 
