@@ -42,6 +42,8 @@ void sales_summary(){
 
     char max_month[255];
     char least_month[255];
+    int max_months = 0;
+    int min_months = 0;
 
 	double sales[12]; //empty array to store nums from sale_nums file.
 	int i; // to assist with for loops. 
@@ -56,20 +58,21 @@ void sales_summary(){
 	for(i=0; i < 12; i++)
     {
         //for loop used to figure what the max sale is.
-        max_sale = 0;
+        max_sale = sales[0]; 
         if(sales[i] > max_sale){
             max_sale = sales[i];
-            strcpy(max_month,Month[i]);
+            max_months = i;
+            
         }
     }
     
 
     for(i=0; i < 12; i++){
-        //for loop used to figure what the mix sale is. 
+        //for loop used to figure what the min sale is. 
         min_sale = sales[0];
         if(sales[i] < min_sale){
             min_sale = sales[i];
-            strcpy(least_month, Month[i]);
+            min_months = i;
         }
 
     }
@@ -80,8 +83,8 @@ void sales_summary(){
     }
 
     printf("Sales summary:\n");
-    printf("Minimum sales: $%10.2f (%s) \n", min_sale, least_month); //Not sure why January doesn't show.
-	printf("Maximum sales: $%10.2f (%s) \n", max_sale, max_month); //But this works.
+    printf("Minimum sales: $%10.2f (%s) \n", min_sale, Month[min_months]); //Not sure why January doesn't show.
+	printf("Maximum sales: $%10.2f (%s) \n", max_sale, Month[max_months]); //But this works.
 	printf("Average sales: $%10.2f\n", avg_sale/12);
 }
 

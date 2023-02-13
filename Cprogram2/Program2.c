@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_PLAYS 50
+#define MAX_PLAYS 3
 #define MAX_TOUCHDOWNS MAX_PLAYS;
 #define MAX_FIELDGOALS MAX_PLAYS
 #define MAX_SAFETIES MAX_PLAYS
@@ -34,11 +34,38 @@ int main(){
     printf("Press 0 or 1 to STOP\n");
     printf("Enter the NFL score: ");
     scanf("%d", &score);
-    
-    
-    do
+
+    while (score != 0 && score !=1)
     {
-        /* code */
-    } while (score != 0 || score != 1);
-        printf("Goodbye.");
-}
+        for (int TD = 0; TD < MAX_TD; TD++)
+        {
+            for (int FG = 0; FG < MAX_FG; FG++)
+            {
+                for (int safety = 0; safety < MAX_SAFETY; safety++)
+                {
+                    for (int TD2P = 0; TD2P < MAX_TD2P; TD2P++)
+                    {
+                        for (int TDFG = 0; TDFG < MAX_FG; TDFG++)
+                        {   
+                        final_score = MAX_TD*TD + MAX_FG*FG + MAX_SAFETIES*safety + MAX_TD2P*TD2P + MAX_FG*TDFG;
+                        if(final_score == score){
+                            printf("\tTDs:%d, FGs:%d, SAFETYs:%d, TD+2p:%d, TD+FG:%d\n",TD, FG_points, safety, TD2P, TDFG);
+
+                        }
+                        }
+                    }
+                    
+                }
+                
+            }
+        }
+        
+        }
+        
+        printf("Press 0 or 1 to STOP\n");
+        printf("Enter the NFL score: ");
+        scanf("%d", &score);
+        
+    }
+
+
